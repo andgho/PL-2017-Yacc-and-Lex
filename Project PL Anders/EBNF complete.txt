@@ -1,0 +1,199 @@
+basic_program = 
+	declaration_unit,
+	implementation_unit;
+
+declaration_unit =
+	‘DECLARATION’ ,
+	‘OF’,
+	ident,
+	[ (‘CONST’, constant_declaration) ],
+	[ (‘VAR’, variable_declaration) ],
+	[ type_declaration],
+	[ procedure_interface],
+	[ function_interface],
+	‘DECLARATION’,
+	‘END;
+
+procedure_interface =
+	‘PROCEDURE’,
+	ident,
+	[formal_parameters];
+
+function_interface =
+	‘FUNCTION’,
+	ident,
+	[formal_parameters];
+
+type_declaration =
+	‘TYPE’,
+	ident,
+	‘:’,
+	type,
+	‘;’;
+
+formal_parameters =
+	‘(‘,
+	ident,
+	{ ‘;’, ident},
+	‘)’;
+
+constant_declaration =
+	ident,
+	‘=‘,
+	number,
+	{‘,’, ident, ‘=‘, number},
+	‘;’;
+
+variable_declaration =
+	ident,
+	‘:’,
+	ident,
+	{‘,’ ,ident, ‘:’, ident},
+	‘;’
+
+type =
+	basic_type | array_type;
+
+basic_type =
+	ident | enumerated_type | range_type;
+
+enumerated_type =
+	‘{‘,
+	ident,
+	{‘,’, ident},
+	‘}’;
+
+range_type =
+	‘[‘,
+	range,
+	‘]’;
+
+array_type =
+	‘ARRAY’,
+	ident,
+	‘[‘,
+	range,
+	‘]’,
+	‘OF’,
+	type;
+
+range = 
+	number,
+	‘..’,
+	number;
+
+Implementation_unit =
+	‘IMPLEMENTATION’,
+	‘OF’,
+	ident,
+	block,
+	‘.’;
+
+block =
+	specification_part,
+	implementation_part;
+
+specification_part =
+	[
+		(‘CONST’, constant_declaration) |
+		(‘VAR’, variable_declaration) |
+		procedure_declaration |
+		function_declaration
+	];
+
+procedure_declaration =
+	‘PROCEDURE’,
+	ident,
+	‘;’,
+	block,
+	‘;’;
+
+function_declaration =
+	‘FUNCTION’,
+	ident,
+	‘;’,
+	block,
+	‘;’;
+
+implementation_part =
+	statement;
+
+statement =
+	assignment |
+	procedure_call |
+	if_statement |
+	while_statement |
+	do_statement |
+	for_statement |
+	compound_statement;
+
+assignment =
+	ident,
+	‘:=‘,
+	expression;
+
+procedure_call =
+	‘CALL’,
+	ident;
+
+if_statement =
+	‘IF’,
+	expression,
+	‘THEN’,
+	statement,
+	‘END IF’;
+
+while_statement =
+	‘WHILE’,
+	expression,
+	‘DO’,
+	statement,
+	{‘;’, statement},
+	‘END WHILE’;
+
+do_statement =
+	‘DO’,
+	statement,
+	{‘;’, statement},
+	‘WHILE’,
+	expression,
+	‘END DO’;
+
+for_statement =
+	‘FOR’,
+	ident,
+	‘:=‘,
+	expression,
+	‘DO’,
+	statement,
+	{‘;’, statement},
+	‘END FOR’;
+
+compound_statement =
+	‘BEGIN’,
+	statement,
+	{‘;’, statement},
+	‘END’;
+
+expression =
+	term,
+	{ 
+		(‘+’  | ’-‘),
+		term
+	};
+
+term =
+	id_num,
+	{ 
+		(‘*’  | ’/‘),
+		id_num
+	};
+
+id_num =
+	ident |
+	number;
+
+number =
+	(‘0’ | ‘1’ | ‘2’ | ‘3’ | ‘4’ | ‘5’ | ‘6’ | ‘7’ | ‘8’ | ‘9’)+;
+
+ident = (‘a’ | ‘b’ | ‘c’ | ‘d’ | ‘e’ | ‘f’ | ‘g’ | ‘h’ | ‘i’ | ‘j’ | ‘k’ | ‘l’ | ‘m’ | ’n’ | ‘o’ | ‘p’ | ‘q’ | ‘r’ | ’s’ | ’t’ | ‘u’ | ‘v’ | ‘w’ | ‘w’ | ‘y’ | ‘z’)+;

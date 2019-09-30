@@ -1,0 +1,1753 @@
+Grammar
+
+    0 $accept: basic_program $end
+
+    1 basic_program: declaration_unit implementation_unit
+
+    2 optional_const: _CONST_ constant_declaration
+    3               | /* empty */
+
+    4 optional_var: _VAR_ variable_declaration
+    5             | /* empty */
+
+    6 optional_type_declaration: type_declaration
+    7                          | /* empty */
+
+    8 optional_procedure_interface: procedure_interface
+    9                             | /* empty */
+
+   10 optional_function_interface: function_interface
+   11                            | /* empty */
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident optional_const optional_var optional_type_declaration optional_procedure_interface optional_function_interface _DECLARATION_ _END_
+
+   13 procedure_interface: _PROCEDURE_ ident
+   14                    | _PROCEDURE_ ident formal_parameters
+
+   15 function_interface: _FUNCTION_ ident
+   16                   | _FUNCTION_ ident formal_parameters
+
+   17 type_declaration: _TYPE_ ident ':' type _SEMICOLON_
+
+   18 ident_semicolon: ident
+   19                | ident_semicolon _SEMICOLON_ ident
+
+   20 formal_parameters: '(' ident_semicolon ')'
+
+   21 constant_loop: ident '=' number
+   22              | constant_loop ',' ident '=' number
+
+   23 constant_declaration: constant_loop _SEMICOLON_
+
+   24 variable_loop: ident ':' ident
+   25              | variable_loop ',' ident ':' ident
+
+   26 variable_declaration: variable_loop _SEMICOLON_
+
+   27 type: basic_type
+   28     | array_type
+
+   29 basic_type: ident
+   30           | enumerated_type
+   31           | range_type
+
+   32 ident_list: ident
+   33           | ident_list ',' ident
+
+   34 enumerated_type: '{' ident_list '}'
+
+   35 range_type: '[' range ']'
+
+   36 array_type: _ARRAY_ ident '[' range ']' _OF_ type
+
+   37 range: number _DOTDOT_ number
+
+   38 implementation_unit: _IMPLEMENTATION_ _OF_ ident block '.'
+
+   39 block: specification_part implementation_part
+
+   40 specification_part: _CONST_ constant_declaration
+   41                   | _VAR_ variable_declaration
+   42                   | procedure_declaration
+   43                   | function_declaration
+   44                   | /* empty */
+
+   45 procedure_declaration: _PROCEDURE_ ident _SEMICOLON_ block _SEMICOLON_
+
+   46 function_declaration: _FUNCTION_ ident _SEMICOLON_ block _SEMICOLON_
+
+   47 implementation_part: statement
+
+   48 statement: assignment
+   49          | procedure_call
+   50          | if_statement
+   51          | while_statement
+   52          | do_statement
+   53          | for_statement
+   54          | compound_statement
+
+   55 assignment: ident _ASSIGN_ expression
+
+   56 procedure_call: _CALL_ ident
+
+   57 if_statement: _IF_ expression _THEN_ statement _END_IF_
+
+   58 while_statement: _WHILE_ expression _DO_ statement_loop _END_WHILE_
+
+   59 do_statement: _DO_ statement_loop _WHILE_ expression _END_DO_
+
+   60 for_statement: _FOR_ ident _ASSIGN_ expression _DO_ statement_loop _END_FOR_
+
+   61 compound_statement: _BEGIN_ statement_loop _END_
+
+   62 statement_loop: statement
+   63               | statement_loop _SEMICOLON_ statement
+
+   64 expression: term
+   65           | expression '+' term
+   66           | expression '-' term
+
+   67 term: id_num
+   68     | term '*' id_num
+   69     | term '/' id_num
+
+   70 id_num: ident
+   71       | number
+
+   72 number: _NUMBER_
+
+   73 ident: _IDENT_
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 20
+')' (41) 20
+'*' (42) 68
+'+' (43) 65
+',' (44) 22 25 33
+'-' (45) 66
+'.' (46) 38
+'/' (47) 69
+':' (58) 17 24 25
+'=' (61) 21 22
+'[' (91) 35 36
+']' (93) 35 36
+'{' (123) 34
+'}' (125) 34
+error (256)
+_DECLARATION_ (258) 12
+_DO_ (259) 58 59 60
+_END_ (260) 12 61
+_BEGIN_ (261) 61
+_CALL_ (262) 56
+_CONST_ (263) 2 40
+_END_DO_ (264) 59
+_END_IF_ (265) 57
+_ARRAY_ (266) 36
+_NUMBER_ (267) 72
+_IDENT_ (268) 73
+_DOTDOT_ (269) 37
+_PROCEDURE_ (270) 13 14 45
+_TYPE_ (271) 17
+_END_FOR_ (272) 60
+_END_WHILE_ (273) 58
+_VAR_ (274) 4 41
+_WHILE_ (275) 58 59
+_ASSIGN_ (276) 55 60
+_SEMICOLON_ (277) 17 19 23 26 45 46 63
+_FOR_ (278) 60
+_FUNCTION_ (279) 15 16 46
+_IF_ (280) 57
+_IMPLEMENTATION_ (281) 38
+_THEN_ (282) 57
+_OF_ (283) 12 36 38
+
+
+Nonterminals, with rules where they appear
+
+$accept (43)
+    on left: 0
+basic_program (44)
+    on left: 1, on right: 0
+optional_const (45)
+    on left: 2 3, on right: 12
+optional_var (46)
+    on left: 4 5, on right: 12
+optional_type_declaration (47)
+    on left: 6 7, on right: 12
+optional_procedure_interface (48)
+    on left: 8 9, on right: 12
+optional_function_interface (49)
+    on left: 10 11, on right: 12
+declaration_unit (50)
+    on left: 12, on right: 1
+procedure_interface (51)
+    on left: 13 14, on right: 8
+function_interface (52)
+    on left: 15 16, on right: 10
+type_declaration (53)
+    on left: 17, on right: 6
+ident_semicolon (54)
+    on left: 18 19, on right: 19 20
+formal_parameters (55)
+    on left: 20, on right: 14 16
+constant_loop (56)
+    on left: 21 22, on right: 22 23
+constant_declaration (57)
+    on left: 23, on right: 2 40
+variable_loop (58)
+    on left: 24 25, on right: 25 26
+variable_declaration (59)
+    on left: 26, on right: 4 41
+type (60)
+    on left: 27 28, on right: 17 36
+basic_type (61)
+    on left: 29 30 31, on right: 27
+ident_list (62)
+    on left: 32 33, on right: 33 34
+enumerated_type (63)
+    on left: 34, on right: 30
+range_type (64)
+    on left: 35, on right: 31
+array_type (65)
+    on left: 36, on right: 28
+range (66)
+    on left: 37, on right: 35 36
+implementation_unit (67)
+    on left: 38, on right: 1
+block (68)
+    on left: 39, on right: 38 45 46
+specification_part (69)
+    on left: 40 41 42 43 44, on right: 39
+procedure_declaration (70)
+    on left: 45, on right: 42
+function_declaration (71)
+    on left: 46, on right: 43
+implementation_part (72)
+    on left: 47, on right: 39
+statement (73)
+    on left: 48 49 50 51 52 53 54, on right: 47 57 62 63
+assignment (74)
+    on left: 55, on right: 48
+procedure_call (75)
+    on left: 56, on right: 49
+if_statement (76)
+    on left: 57, on right: 50
+while_statement (77)
+    on left: 58, on right: 51
+do_statement (78)
+    on left: 59, on right: 52
+for_statement (79)
+    on left: 60, on right: 53
+compound_statement (80)
+    on left: 61, on right: 54
+statement_loop (81)
+    on left: 62 63, on right: 58 59 60 61 63
+expression (82)
+    on left: 64 65 66, on right: 55 57 58 59 60 65 66
+term (83)
+    on left: 67 68 69, on right: 64 65 66 68 69
+id_num (84)
+    on left: 70 71, on right: 67 68 69
+number (85)
+    on left: 72, on right: 21 22 37 71
+ident (86)
+    on left: 73, on right: 12 13 14 15 16 17 18 19 21 22 24 25 29 32
+    33 36 38 45 46 55 56 60 70
+
+
+state 0
+
+    0 $accept: . basic_program $end
+
+    _DECLARATION_  shift, and go to state 1
+
+    basic_program     go to state 2
+    declaration_unit  go to state 3
+
+
+state 1
+
+   12 declaration_unit: _DECLARATION_ . _OF_ ident optional_const optional_var optional_type_declaration optional_procedure_interface optional_function_interface _DECLARATION_ _END_
+
+    _OF_  shift, and go to state 4
+
+
+state 2
+
+    0 $accept: basic_program . $end
+
+    $end  shift, and go to state 5
+
+
+state 3
+
+    1 basic_program: declaration_unit . implementation_unit
+
+    _IMPLEMENTATION_  shift, and go to state 6
+
+    implementation_unit  go to state 7
+
+
+state 4
+
+   12 declaration_unit: _DECLARATION_ _OF_ . ident optional_const optional_var optional_type_declaration optional_procedure_interface optional_function_interface _DECLARATION_ _END_
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 9
+
+
+state 5
+
+    0 $accept: basic_program $end .
+
+    $default  accept
+
+
+state 6
+
+   38 implementation_unit: _IMPLEMENTATION_ . _OF_ ident block '.'
+
+    _OF_  shift, and go to state 10
+
+
+state 7
+
+    1 basic_program: declaration_unit implementation_unit .
+
+    $default  reduce using rule 1 (basic_program)
+
+
+state 8
+
+   73 ident: _IDENT_ .
+
+    $default  reduce using rule 73 (ident)
+
+
+state 9
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident . optional_const optional_var optional_type_declaration optional_procedure_interface optional_function_interface _DECLARATION_ _END_
+
+    _CONST_  shift, and go to state 11
+
+    $default  reduce using rule 3 (optional_const)
+
+    optional_const  go to state 12
+
+
+state 10
+
+   38 implementation_unit: _IMPLEMENTATION_ _OF_ . ident block '.'
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 13
+
+
+state 11
+
+    2 optional_const: _CONST_ . constant_declaration
+
+    _IDENT_  shift, and go to state 8
+
+    constant_loop         go to state 14
+    constant_declaration  go to state 15
+    ident                 go to state 16
+
+
+state 12
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident optional_const . optional_var optional_type_declaration optional_procedure_interface optional_function_interface _DECLARATION_ _END_
+
+    _VAR_  shift, and go to state 17
+
+    $default  reduce using rule 5 (optional_var)
+
+    optional_var  go to state 18
+
+
+state 13
+
+   38 implementation_unit: _IMPLEMENTATION_ _OF_ ident . block '.'
+
+    _CONST_      shift, and go to state 19
+    _PROCEDURE_  shift, and go to state 20
+    _VAR_        shift, and go to state 21
+    _FUNCTION_   shift, and go to state 22
+
+    $default  reduce using rule 44 (specification_part)
+
+    block                  go to state 23
+    specification_part     go to state 24
+    procedure_declaration  go to state 25
+    function_declaration   go to state 26
+
+
+state 14
+
+   22 constant_loop: constant_loop . ',' ident '=' number
+   23 constant_declaration: constant_loop . _SEMICOLON_
+
+    _SEMICOLON_  shift, and go to state 27
+    ','          shift, and go to state 28
+
+
+state 15
+
+    2 optional_const: _CONST_ constant_declaration .
+
+    $default  reduce using rule 2 (optional_const)
+
+
+state 16
+
+   21 constant_loop: ident . '=' number
+
+    '='  shift, and go to state 29
+
+
+state 17
+
+    4 optional_var: _VAR_ . variable_declaration
+
+    _IDENT_  shift, and go to state 8
+
+    variable_loop         go to state 30
+    variable_declaration  go to state 31
+    ident                 go to state 32
+
+
+state 18
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident optional_const optional_var . optional_type_declaration optional_procedure_interface optional_function_interface _DECLARATION_ _END_
+
+    _TYPE_  shift, and go to state 33
+
+    $default  reduce using rule 7 (optional_type_declaration)
+
+    optional_type_declaration  go to state 34
+    type_declaration           go to state 35
+
+
+state 19
+
+   40 specification_part: _CONST_ . constant_declaration
+
+    _IDENT_  shift, and go to state 8
+
+    constant_loop         go to state 14
+    constant_declaration  go to state 36
+    ident                 go to state 16
+
+
+state 20
+
+   45 procedure_declaration: _PROCEDURE_ . ident _SEMICOLON_ block _SEMICOLON_
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 37
+
+
+state 21
+
+   41 specification_part: _VAR_ . variable_declaration
+
+    _IDENT_  shift, and go to state 8
+
+    variable_loop         go to state 30
+    variable_declaration  go to state 38
+    ident                 go to state 32
+
+
+state 22
+
+   46 function_declaration: _FUNCTION_ . ident _SEMICOLON_ block _SEMICOLON_
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 39
+
+
+state 23
+
+   38 implementation_unit: _IMPLEMENTATION_ _OF_ ident block . '.'
+
+    '.'  shift, and go to state 40
+
+
+state 24
+
+   39 block: specification_part . implementation_part
+
+    _DO_     shift, and go to state 41
+    _BEGIN_  shift, and go to state 42
+    _CALL_   shift, and go to state 43
+    _IDENT_  shift, and go to state 8
+    _WHILE_  shift, and go to state 44
+    _FOR_    shift, and go to state 45
+    _IF_     shift, and go to state 46
+
+    implementation_part  go to state 47
+    statement            go to state 48
+    assignment           go to state 49
+    procedure_call       go to state 50
+    if_statement         go to state 51
+    while_statement      go to state 52
+    do_statement         go to state 53
+    for_statement        go to state 54
+    compound_statement   go to state 55
+    ident                go to state 56
+
+
+state 25
+
+   42 specification_part: procedure_declaration .
+
+    $default  reduce using rule 42 (specification_part)
+
+
+state 26
+
+   43 specification_part: function_declaration .
+
+    $default  reduce using rule 43 (specification_part)
+
+
+state 27
+
+   23 constant_declaration: constant_loop _SEMICOLON_ .
+
+    $default  reduce using rule 23 (constant_declaration)
+
+
+state 28
+
+   22 constant_loop: constant_loop ',' . ident '=' number
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 57
+
+
+state 29
+
+   21 constant_loop: ident '=' . number
+
+    _NUMBER_  shift, and go to state 58
+
+    number  go to state 59
+
+
+state 30
+
+   25 variable_loop: variable_loop . ',' ident ':' ident
+   26 variable_declaration: variable_loop . _SEMICOLON_
+
+    _SEMICOLON_  shift, and go to state 60
+    ','          shift, and go to state 61
+
+
+state 31
+
+    4 optional_var: _VAR_ variable_declaration .
+
+    $default  reduce using rule 4 (optional_var)
+
+
+state 32
+
+   24 variable_loop: ident . ':' ident
+
+    ':'  shift, and go to state 62
+
+
+state 33
+
+   17 type_declaration: _TYPE_ . ident ':' type _SEMICOLON_
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 63
+
+
+state 34
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident optional_const optional_var optional_type_declaration . optional_procedure_interface optional_function_interface _DECLARATION_ _END_
+
+    _PROCEDURE_  shift, and go to state 64
+
+    $default  reduce using rule 9 (optional_procedure_interface)
+
+    optional_procedure_interface  go to state 65
+    procedure_interface           go to state 66
+
+
+state 35
+
+    6 optional_type_declaration: type_declaration .
+
+    $default  reduce using rule 6 (optional_type_declaration)
+
+
+state 36
+
+   40 specification_part: _CONST_ constant_declaration .
+
+    $default  reduce using rule 40 (specification_part)
+
+
+state 37
+
+   45 procedure_declaration: _PROCEDURE_ ident . _SEMICOLON_ block _SEMICOLON_
+
+    _SEMICOLON_  shift, and go to state 67
+
+
+state 38
+
+   41 specification_part: _VAR_ variable_declaration .
+
+    $default  reduce using rule 41 (specification_part)
+
+
+state 39
+
+   46 function_declaration: _FUNCTION_ ident . _SEMICOLON_ block _SEMICOLON_
+
+    _SEMICOLON_  shift, and go to state 68
+
+
+state 40
+
+   38 implementation_unit: _IMPLEMENTATION_ _OF_ ident block '.' .
+
+    $default  reduce using rule 38 (implementation_unit)
+
+
+state 41
+
+   59 do_statement: _DO_ . statement_loop _WHILE_ expression _END_DO_
+
+    _DO_     shift, and go to state 41
+    _BEGIN_  shift, and go to state 42
+    _CALL_   shift, and go to state 43
+    _IDENT_  shift, and go to state 8
+    _WHILE_  shift, and go to state 44
+    _FOR_    shift, and go to state 45
+    _IF_     shift, and go to state 46
+
+    statement           go to state 69
+    assignment          go to state 49
+    procedure_call      go to state 50
+    if_statement        go to state 51
+    while_statement     go to state 52
+    do_statement        go to state 53
+    for_statement       go to state 54
+    compound_statement  go to state 55
+    statement_loop      go to state 70
+    ident               go to state 56
+
+
+state 42
+
+   61 compound_statement: _BEGIN_ . statement_loop _END_
+
+    _DO_     shift, and go to state 41
+    _BEGIN_  shift, and go to state 42
+    _CALL_   shift, and go to state 43
+    _IDENT_  shift, and go to state 8
+    _WHILE_  shift, and go to state 44
+    _FOR_    shift, and go to state 45
+    _IF_     shift, and go to state 46
+
+    statement           go to state 69
+    assignment          go to state 49
+    procedure_call      go to state 50
+    if_statement        go to state 51
+    while_statement     go to state 52
+    do_statement        go to state 53
+    for_statement       go to state 54
+    compound_statement  go to state 55
+    statement_loop      go to state 71
+    ident               go to state 56
+
+
+state 43
+
+   56 procedure_call: _CALL_ . ident
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 72
+
+
+state 44
+
+   58 while_statement: _WHILE_ . expression _DO_ statement_loop _END_WHILE_
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    expression  go to state 73
+    term        go to state 74
+    id_num      go to state 75
+    number      go to state 76
+    ident       go to state 77
+
+
+state 45
+
+   60 for_statement: _FOR_ . ident _ASSIGN_ expression _DO_ statement_loop _END_FOR_
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 78
+
+
+state 46
+
+   57 if_statement: _IF_ . expression _THEN_ statement _END_IF_
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    expression  go to state 79
+    term        go to state 74
+    id_num      go to state 75
+    number      go to state 76
+    ident       go to state 77
+
+
+state 47
+
+   39 block: specification_part implementation_part .
+
+    $default  reduce using rule 39 (block)
+
+
+state 48
+
+   47 implementation_part: statement .
+
+    $default  reduce using rule 47 (implementation_part)
+
+
+state 49
+
+   48 statement: assignment .
+
+    $default  reduce using rule 48 (statement)
+
+
+state 50
+
+   49 statement: procedure_call .
+
+    $default  reduce using rule 49 (statement)
+
+
+state 51
+
+   50 statement: if_statement .
+
+    $default  reduce using rule 50 (statement)
+
+
+state 52
+
+   51 statement: while_statement .
+
+    $default  reduce using rule 51 (statement)
+
+
+state 53
+
+   52 statement: do_statement .
+
+    $default  reduce using rule 52 (statement)
+
+
+state 54
+
+   53 statement: for_statement .
+
+    $default  reduce using rule 53 (statement)
+
+
+state 55
+
+   54 statement: compound_statement .
+
+    $default  reduce using rule 54 (statement)
+
+
+state 56
+
+   55 assignment: ident . _ASSIGN_ expression
+
+    _ASSIGN_  shift, and go to state 80
+
+
+state 57
+
+   22 constant_loop: constant_loop ',' ident . '=' number
+
+    '='  shift, and go to state 81
+
+
+state 58
+
+   72 number: _NUMBER_ .
+
+    $default  reduce using rule 72 (number)
+
+
+state 59
+
+   21 constant_loop: ident '=' number .
+
+    $default  reduce using rule 21 (constant_loop)
+
+
+state 60
+
+   26 variable_declaration: variable_loop _SEMICOLON_ .
+
+    $default  reduce using rule 26 (variable_declaration)
+
+
+state 61
+
+   25 variable_loop: variable_loop ',' . ident ':' ident
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 82
+
+
+state 62
+
+   24 variable_loop: ident ':' . ident
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 83
+
+
+state 63
+
+   17 type_declaration: _TYPE_ ident . ':' type _SEMICOLON_
+
+    ':'  shift, and go to state 84
+
+
+state 64
+
+   13 procedure_interface: _PROCEDURE_ . ident
+   14                    | _PROCEDURE_ . ident formal_parameters
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 85
+
+
+state 65
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident optional_const optional_var optional_type_declaration optional_procedure_interface . optional_function_interface _DECLARATION_ _END_
+
+    _FUNCTION_  shift, and go to state 86
+
+    $default  reduce using rule 11 (optional_function_interface)
+
+    optional_function_interface  go to state 87
+    function_interface           go to state 88
+
+
+state 66
+
+    8 optional_procedure_interface: procedure_interface .
+
+    $default  reduce using rule 8 (optional_procedure_interface)
+
+
+state 67
+
+   45 procedure_declaration: _PROCEDURE_ ident _SEMICOLON_ . block _SEMICOLON_
+
+    _CONST_      shift, and go to state 19
+    _PROCEDURE_  shift, and go to state 20
+    _VAR_        shift, and go to state 21
+    _FUNCTION_   shift, and go to state 22
+
+    $default  reduce using rule 44 (specification_part)
+
+    block                  go to state 89
+    specification_part     go to state 24
+    procedure_declaration  go to state 25
+    function_declaration   go to state 26
+
+
+state 68
+
+   46 function_declaration: _FUNCTION_ ident _SEMICOLON_ . block _SEMICOLON_
+
+    _CONST_      shift, and go to state 19
+    _PROCEDURE_  shift, and go to state 20
+    _VAR_        shift, and go to state 21
+    _FUNCTION_   shift, and go to state 22
+
+    $default  reduce using rule 44 (specification_part)
+
+    block                  go to state 90
+    specification_part     go to state 24
+    procedure_declaration  go to state 25
+    function_declaration   go to state 26
+
+
+state 69
+
+   62 statement_loop: statement .
+
+    $default  reduce using rule 62 (statement_loop)
+
+
+state 70
+
+   59 do_statement: _DO_ statement_loop . _WHILE_ expression _END_DO_
+   63 statement_loop: statement_loop . _SEMICOLON_ statement
+
+    _WHILE_      shift, and go to state 91
+    _SEMICOLON_  shift, and go to state 92
+
+
+state 71
+
+   61 compound_statement: _BEGIN_ statement_loop . _END_
+   63 statement_loop: statement_loop . _SEMICOLON_ statement
+
+    _END_        shift, and go to state 93
+    _SEMICOLON_  shift, and go to state 92
+
+
+state 72
+
+   56 procedure_call: _CALL_ ident .
+
+    $default  reduce using rule 56 (procedure_call)
+
+
+state 73
+
+   58 while_statement: _WHILE_ expression . _DO_ statement_loop _END_WHILE_
+   65 expression: expression . '+' term
+   66           | expression . '-' term
+
+    _DO_  shift, and go to state 94
+    '+'   shift, and go to state 95
+    '-'   shift, and go to state 96
+
+
+state 74
+
+   64 expression: term .
+   68 term: term . '*' id_num
+   69     | term . '/' id_num
+
+    '*'  shift, and go to state 97
+    '/'  shift, and go to state 98
+
+    $default  reduce using rule 64 (expression)
+
+
+state 75
+
+   67 term: id_num .
+
+    $default  reduce using rule 67 (term)
+
+
+state 76
+
+   71 id_num: number .
+
+    $default  reduce using rule 71 (id_num)
+
+
+state 77
+
+   70 id_num: ident .
+
+    $default  reduce using rule 70 (id_num)
+
+
+state 78
+
+   60 for_statement: _FOR_ ident . _ASSIGN_ expression _DO_ statement_loop _END_FOR_
+
+    _ASSIGN_  shift, and go to state 99
+
+
+state 79
+
+   57 if_statement: _IF_ expression . _THEN_ statement _END_IF_
+   65 expression: expression . '+' term
+   66           | expression . '-' term
+
+    _THEN_  shift, and go to state 100
+    '+'     shift, and go to state 95
+    '-'     shift, and go to state 96
+
+
+state 80
+
+   55 assignment: ident _ASSIGN_ . expression
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    expression  go to state 101
+    term        go to state 74
+    id_num      go to state 75
+    number      go to state 76
+    ident       go to state 77
+
+
+state 81
+
+   22 constant_loop: constant_loop ',' ident '=' . number
+
+    _NUMBER_  shift, and go to state 58
+
+    number  go to state 102
+
+
+state 82
+
+   25 variable_loop: variable_loop ',' ident . ':' ident
+
+    ':'  shift, and go to state 103
+
+
+state 83
+
+   24 variable_loop: ident ':' ident .
+
+    $default  reduce using rule 24 (variable_loop)
+
+
+state 84
+
+   17 type_declaration: _TYPE_ ident ':' . type _SEMICOLON_
+
+    _ARRAY_  shift, and go to state 104
+    _IDENT_  shift, and go to state 8
+    '{'      shift, and go to state 105
+    '['      shift, and go to state 106
+
+    type             go to state 107
+    basic_type       go to state 108
+    enumerated_type  go to state 109
+    range_type       go to state 110
+    array_type       go to state 111
+    ident            go to state 112
+
+
+state 85
+
+   13 procedure_interface: _PROCEDURE_ ident .
+   14                    | _PROCEDURE_ ident . formal_parameters
+
+    '('  shift, and go to state 113
+
+    $default  reduce using rule 13 (procedure_interface)
+
+    formal_parameters  go to state 114
+
+
+state 86
+
+   15 function_interface: _FUNCTION_ . ident
+   16                   | _FUNCTION_ . ident formal_parameters
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 115
+
+
+state 87
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident optional_const optional_var optional_type_declaration optional_procedure_interface optional_function_interface . _DECLARATION_ _END_
+
+    _DECLARATION_  shift, and go to state 116
+
+
+state 88
+
+   10 optional_function_interface: function_interface .
+
+    $default  reduce using rule 10 (optional_function_interface)
+
+
+state 89
+
+   45 procedure_declaration: _PROCEDURE_ ident _SEMICOLON_ block . _SEMICOLON_
+
+    _SEMICOLON_  shift, and go to state 117
+
+
+state 90
+
+   46 function_declaration: _FUNCTION_ ident _SEMICOLON_ block . _SEMICOLON_
+
+    _SEMICOLON_  shift, and go to state 118
+
+
+state 91
+
+   59 do_statement: _DO_ statement_loop _WHILE_ . expression _END_DO_
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    expression  go to state 119
+    term        go to state 74
+    id_num      go to state 75
+    number      go to state 76
+    ident       go to state 77
+
+
+state 92
+
+   63 statement_loop: statement_loop _SEMICOLON_ . statement
+
+    _DO_     shift, and go to state 41
+    _BEGIN_  shift, and go to state 42
+    _CALL_   shift, and go to state 43
+    _IDENT_  shift, and go to state 8
+    _WHILE_  shift, and go to state 44
+    _FOR_    shift, and go to state 45
+    _IF_     shift, and go to state 46
+
+    statement           go to state 120
+    assignment          go to state 49
+    procedure_call      go to state 50
+    if_statement        go to state 51
+    while_statement     go to state 52
+    do_statement        go to state 53
+    for_statement       go to state 54
+    compound_statement  go to state 55
+    ident               go to state 56
+
+
+state 93
+
+   61 compound_statement: _BEGIN_ statement_loop _END_ .
+
+    $default  reduce using rule 61 (compound_statement)
+
+
+state 94
+
+   58 while_statement: _WHILE_ expression _DO_ . statement_loop _END_WHILE_
+
+    _DO_     shift, and go to state 41
+    _BEGIN_  shift, and go to state 42
+    _CALL_   shift, and go to state 43
+    _IDENT_  shift, and go to state 8
+    _WHILE_  shift, and go to state 44
+    _FOR_    shift, and go to state 45
+    _IF_     shift, and go to state 46
+
+    statement           go to state 69
+    assignment          go to state 49
+    procedure_call      go to state 50
+    if_statement        go to state 51
+    while_statement     go to state 52
+    do_statement        go to state 53
+    for_statement       go to state 54
+    compound_statement  go to state 55
+    statement_loop      go to state 121
+    ident               go to state 56
+
+
+state 95
+
+   65 expression: expression '+' . term
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    term    go to state 122
+    id_num  go to state 75
+    number  go to state 76
+    ident   go to state 77
+
+
+state 96
+
+   66 expression: expression '-' . term
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    term    go to state 123
+    id_num  go to state 75
+    number  go to state 76
+    ident   go to state 77
+
+
+state 97
+
+   68 term: term '*' . id_num
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    id_num  go to state 124
+    number  go to state 76
+    ident   go to state 77
+
+
+state 98
+
+   69 term: term '/' . id_num
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    id_num  go to state 125
+    number  go to state 76
+    ident   go to state 77
+
+
+state 99
+
+   60 for_statement: _FOR_ ident _ASSIGN_ . expression _DO_ statement_loop _END_FOR_
+
+    _NUMBER_  shift, and go to state 58
+    _IDENT_   shift, and go to state 8
+
+    expression  go to state 126
+    term        go to state 74
+    id_num      go to state 75
+    number      go to state 76
+    ident       go to state 77
+
+
+state 100
+
+   57 if_statement: _IF_ expression _THEN_ . statement _END_IF_
+
+    _DO_     shift, and go to state 41
+    _BEGIN_  shift, and go to state 42
+    _CALL_   shift, and go to state 43
+    _IDENT_  shift, and go to state 8
+    _WHILE_  shift, and go to state 44
+    _FOR_    shift, and go to state 45
+    _IF_     shift, and go to state 46
+
+    statement           go to state 127
+    assignment          go to state 49
+    procedure_call      go to state 50
+    if_statement        go to state 51
+    while_statement     go to state 52
+    do_statement        go to state 53
+    for_statement       go to state 54
+    compound_statement  go to state 55
+    ident               go to state 56
+
+
+state 101
+
+   55 assignment: ident _ASSIGN_ expression .
+   65 expression: expression . '+' term
+   66           | expression . '-' term
+
+    '+'  shift, and go to state 95
+    '-'  shift, and go to state 96
+
+    $default  reduce using rule 55 (assignment)
+
+
+state 102
+
+   22 constant_loop: constant_loop ',' ident '=' number .
+
+    $default  reduce using rule 22 (constant_loop)
+
+
+state 103
+
+   25 variable_loop: variable_loop ',' ident ':' . ident
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 128
+
+
+state 104
+
+   36 array_type: _ARRAY_ . ident '[' range ']' _OF_ type
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 129
+
+
+state 105
+
+   34 enumerated_type: '{' . ident_list '}'
+
+    _IDENT_  shift, and go to state 8
+
+    ident_list  go to state 130
+    ident       go to state 131
+
+
+state 106
+
+   35 range_type: '[' . range ']'
+
+    _NUMBER_  shift, and go to state 58
+
+    range   go to state 132
+    number  go to state 133
+
+
+state 107
+
+   17 type_declaration: _TYPE_ ident ':' type . _SEMICOLON_
+
+    _SEMICOLON_  shift, and go to state 134
+
+
+state 108
+
+   27 type: basic_type .
+
+    $default  reduce using rule 27 (type)
+
+
+state 109
+
+   30 basic_type: enumerated_type .
+
+    $default  reduce using rule 30 (basic_type)
+
+
+state 110
+
+   31 basic_type: range_type .
+
+    $default  reduce using rule 31 (basic_type)
+
+
+state 111
+
+   28 type: array_type .
+
+    $default  reduce using rule 28 (type)
+
+
+state 112
+
+   29 basic_type: ident .
+
+    $default  reduce using rule 29 (basic_type)
+
+
+state 113
+
+   20 formal_parameters: '(' . ident_semicolon ')'
+
+    _IDENT_  shift, and go to state 8
+
+    ident_semicolon  go to state 135
+    ident            go to state 136
+
+
+state 114
+
+   14 procedure_interface: _PROCEDURE_ ident formal_parameters .
+
+    $default  reduce using rule 14 (procedure_interface)
+
+
+state 115
+
+   15 function_interface: _FUNCTION_ ident .
+   16                   | _FUNCTION_ ident . formal_parameters
+
+    '('  shift, and go to state 113
+
+    $default  reduce using rule 15 (function_interface)
+
+    formal_parameters  go to state 137
+
+
+state 116
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident optional_const optional_var optional_type_declaration optional_procedure_interface optional_function_interface _DECLARATION_ . _END_
+
+    _END_  shift, and go to state 138
+
+
+state 117
+
+   45 procedure_declaration: _PROCEDURE_ ident _SEMICOLON_ block _SEMICOLON_ .
+
+    $default  reduce using rule 45 (procedure_declaration)
+
+
+state 118
+
+   46 function_declaration: _FUNCTION_ ident _SEMICOLON_ block _SEMICOLON_ .
+
+    $default  reduce using rule 46 (function_declaration)
+
+
+state 119
+
+   59 do_statement: _DO_ statement_loop _WHILE_ expression . _END_DO_
+   65 expression: expression . '+' term
+   66           | expression . '-' term
+
+    _END_DO_  shift, and go to state 139
+    '+'       shift, and go to state 95
+    '-'       shift, and go to state 96
+
+
+state 120
+
+   63 statement_loop: statement_loop _SEMICOLON_ statement .
+
+    $default  reduce using rule 63 (statement_loop)
+
+
+state 121
+
+   58 while_statement: _WHILE_ expression _DO_ statement_loop . _END_WHILE_
+   63 statement_loop: statement_loop . _SEMICOLON_ statement
+
+    _END_WHILE_  shift, and go to state 140
+    _SEMICOLON_  shift, and go to state 92
+
+
+state 122
+
+   65 expression: expression '+' term .
+   68 term: term . '*' id_num
+   69     | term . '/' id_num
+
+    '*'  shift, and go to state 97
+    '/'  shift, and go to state 98
+
+    $default  reduce using rule 65 (expression)
+
+
+state 123
+
+   66 expression: expression '-' term .
+   68 term: term . '*' id_num
+   69     | term . '/' id_num
+
+    '*'  shift, and go to state 97
+    '/'  shift, and go to state 98
+
+    $default  reduce using rule 66 (expression)
+
+
+state 124
+
+   68 term: term '*' id_num .
+
+    $default  reduce using rule 68 (term)
+
+
+state 125
+
+   69 term: term '/' id_num .
+
+    $default  reduce using rule 69 (term)
+
+
+state 126
+
+   60 for_statement: _FOR_ ident _ASSIGN_ expression . _DO_ statement_loop _END_FOR_
+   65 expression: expression . '+' term
+   66           | expression . '-' term
+
+    _DO_  shift, and go to state 141
+    '+'   shift, and go to state 95
+    '-'   shift, and go to state 96
+
+
+state 127
+
+   57 if_statement: _IF_ expression _THEN_ statement . _END_IF_
+
+    _END_IF_  shift, and go to state 142
+
+
+state 128
+
+   25 variable_loop: variable_loop ',' ident ':' ident .
+
+    $default  reduce using rule 25 (variable_loop)
+
+
+state 129
+
+   36 array_type: _ARRAY_ ident . '[' range ']' _OF_ type
+
+    '['  shift, and go to state 143
+
+
+state 130
+
+   33 ident_list: ident_list . ',' ident
+   34 enumerated_type: '{' ident_list . '}'
+
+    ','  shift, and go to state 144
+    '}'  shift, and go to state 145
+
+
+state 131
+
+   32 ident_list: ident .
+
+    $default  reduce using rule 32 (ident_list)
+
+
+state 132
+
+   35 range_type: '[' range . ']'
+
+    ']'  shift, and go to state 146
+
+
+state 133
+
+   37 range: number . _DOTDOT_ number
+
+    _DOTDOT_  shift, and go to state 147
+
+
+state 134
+
+   17 type_declaration: _TYPE_ ident ':' type _SEMICOLON_ .
+
+    $default  reduce using rule 17 (type_declaration)
+
+
+state 135
+
+   19 ident_semicolon: ident_semicolon . _SEMICOLON_ ident
+   20 formal_parameters: '(' ident_semicolon . ')'
+
+    _SEMICOLON_  shift, and go to state 148
+    ')'          shift, and go to state 149
+
+
+state 136
+
+   18 ident_semicolon: ident .
+
+    $default  reduce using rule 18 (ident_semicolon)
+
+
+state 137
+
+   16 function_interface: _FUNCTION_ ident formal_parameters .
+
+    $default  reduce using rule 16 (function_interface)
+
+
+state 138
+
+   12 declaration_unit: _DECLARATION_ _OF_ ident optional_const optional_var optional_type_declaration optional_procedure_interface optional_function_interface _DECLARATION_ _END_ .
+
+    $default  reduce using rule 12 (declaration_unit)
+
+
+state 139
+
+   59 do_statement: _DO_ statement_loop _WHILE_ expression _END_DO_ .
+
+    $default  reduce using rule 59 (do_statement)
+
+
+state 140
+
+   58 while_statement: _WHILE_ expression _DO_ statement_loop _END_WHILE_ .
+
+    $default  reduce using rule 58 (while_statement)
+
+
+state 141
+
+   60 for_statement: _FOR_ ident _ASSIGN_ expression _DO_ . statement_loop _END_FOR_
+
+    _DO_     shift, and go to state 41
+    _BEGIN_  shift, and go to state 42
+    _CALL_   shift, and go to state 43
+    _IDENT_  shift, and go to state 8
+    _WHILE_  shift, and go to state 44
+    _FOR_    shift, and go to state 45
+    _IF_     shift, and go to state 46
+
+    statement           go to state 69
+    assignment          go to state 49
+    procedure_call      go to state 50
+    if_statement        go to state 51
+    while_statement     go to state 52
+    do_statement        go to state 53
+    for_statement       go to state 54
+    compound_statement  go to state 55
+    statement_loop      go to state 150
+    ident               go to state 56
+
+
+state 142
+
+   57 if_statement: _IF_ expression _THEN_ statement _END_IF_ .
+
+    $default  reduce using rule 57 (if_statement)
+
+
+state 143
+
+   36 array_type: _ARRAY_ ident '[' . range ']' _OF_ type
+
+    _NUMBER_  shift, and go to state 58
+
+    range   go to state 151
+    number  go to state 133
+
+
+state 144
+
+   33 ident_list: ident_list ',' . ident
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 152
+
+
+state 145
+
+   34 enumerated_type: '{' ident_list '}' .
+
+    $default  reduce using rule 34 (enumerated_type)
+
+
+state 146
+
+   35 range_type: '[' range ']' .
+
+    $default  reduce using rule 35 (range_type)
+
+
+state 147
+
+   37 range: number _DOTDOT_ . number
+
+    _NUMBER_  shift, and go to state 58
+
+    number  go to state 153
+
+
+state 148
+
+   19 ident_semicolon: ident_semicolon _SEMICOLON_ . ident
+
+    _IDENT_  shift, and go to state 8
+
+    ident  go to state 154
+
+
+state 149
+
+   20 formal_parameters: '(' ident_semicolon ')' .
+
+    $default  reduce using rule 20 (formal_parameters)
+
+
+state 150
+
+   60 for_statement: _FOR_ ident _ASSIGN_ expression _DO_ statement_loop . _END_FOR_
+   63 statement_loop: statement_loop . _SEMICOLON_ statement
+
+    _END_FOR_    shift, and go to state 155
+    _SEMICOLON_  shift, and go to state 92
+
+
+state 151
+
+   36 array_type: _ARRAY_ ident '[' range . ']' _OF_ type
+
+    ']'  shift, and go to state 156
+
+
+state 152
+
+   33 ident_list: ident_list ',' ident .
+
+    $default  reduce using rule 33 (ident_list)
+
+
+state 153
+
+   37 range: number _DOTDOT_ number .
+
+    $default  reduce using rule 37 (range)
+
+
+state 154
+
+   19 ident_semicolon: ident_semicolon _SEMICOLON_ ident .
+
+    $default  reduce using rule 19 (ident_semicolon)
+
+
+state 155
+
+   60 for_statement: _FOR_ ident _ASSIGN_ expression _DO_ statement_loop _END_FOR_ .
+
+    $default  reduce using rule 60 (for_statement)
+
+
+state 156
+
+   36 array_type: _ARRAY_ ident '[' range ']' . _OF_ type
+
+    _OF_  shift, and go to state 157
+
+
+state 157
+
+   36 array_type: _ARRAY_ ident '[' range ']' _OF_ . type
+
+    _ARRAY_  shift, and go to state 104
+    _IDENT_  shift, and go to state 8
+    '{'      shift, and go to state 105
+    '['      shift, and go to state 106
+
+    type             go to state 158
+    basic_type       go to state 108
+    enumerated_type  go to state 109
+    range_type       go to state 110
+    array_type       go to state 111
+    ident            go to state 112
+
+
+state 158
+
+   36 array_type: _ARRAY_ ident '[' range ']' _OF_ type .
+
+    $default  reduce using rule 36 (array_type)

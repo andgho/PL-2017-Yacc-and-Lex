@@ -1,0 +1,27 @@
+DECLARATION OF hello
+    CONST hello = 9, world = 1;
+    VAR norge:potato, hei:sann;
+    TYPE salmon:ARRAY yo [1..3] OF {boisan, breda};
+    PROCEDURE halla(heisann; hoppsann)
+    FUNCTION hello(bror; san)
+DECLARATION END
+
+IMPLEMENTATION OF bajs
+    PROCEDURE lol;
+        FUNCTION lol;
+            WHILE 3 * 4 * 1 DO
+                DO
+                    FOR heya := 3*4+1*2 DO
+                        BEGIN
+                        halla := a1d12le12ead33ojfa3f*2+1;
+                        potet := 4
+                        END;
+                        IF 1+2 THEN
+                        CALL jada
+                        END IF
+                    END FOR
+                WHILE 1+5*3 END DO
+            END WHILE;
+        CALL myman;
+    CALL myman
+.
